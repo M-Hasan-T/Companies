@@ -20,7 +20,7 @@ namespace Companies.API.Extensions
                 {
                     await SeedData.InitAsync(db);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     throw;
                 }
