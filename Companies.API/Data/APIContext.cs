@@ -9,11 +9,11 @@ namespace Companies.API.Data
 {
     public class APIContext : DbContext
     {
-        public APIContext (DbContextOptions<APIContext> options)
+        public APIContext(DbContextOptions<APIContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Companies.API.Entities.Company> Company { get; set; } = default!;
+        public DbSet<Company> Company => Set<Company>();
     }
 }
