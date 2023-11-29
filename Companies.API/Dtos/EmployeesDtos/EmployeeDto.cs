@@ -1,9 +1,11 @@
 ﻿
+
+
 using System.ComponentModel.DataAnnotations;
 
 namespace Companies.API.Dtos.EmployeesDtos
 {
-    public class EmployeeDto
+    public record EmployeeDto
     {
         public Guid Id { get; init; }
 
