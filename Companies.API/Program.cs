@@ -16,7 +16,8 @@ namespace Companies.API
             builder.Services.AddControllers(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters();
+            });
+            //.AddXmlDataContractSerializerFormatters();
 
             builder.Services.AddDbContext<APIContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("APIContext")
