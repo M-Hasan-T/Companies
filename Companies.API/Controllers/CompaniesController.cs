@@ -103,23 +103,27 @@ namespace Companies.API.Controllers
         public async Task<ActionResult<Company>> PostCompany(CompanyForCreationDto dto)
         {
 
-            var company = new Company
-            {
-                Name = dto.Name,
-                Address = dto.Address!,
-                Country = dto.Country!,
-            };
+            //var company = new Company
+            //{
+            //    Name = dto.Name,
+            //    Address = dto.Address!,
+            //    Country = dto.Country!,
+            //};
+
+            var company = mapper.Map<Company>(dto);
 
             _context.Companies.Add(company);
             await _context.SaveChangesAsync();
 
-            var companyToReturn = new CompanyDto
-            {
-                Id = company.Id,
-                Name = company.Name,
-                Address = company.Address,
-                //Country = company.Country,
-            };
+            //var companyToReturn = new CompanyDto
+            //{
+            //    Id = company.Id,
+            //    Name = company.Name,
+            //    Address = company.Address,
+            //    //Country = company.Country,
+            //};
+
+            var companyToReturn = mapper.Map<CompanyDto>(company);
 
             return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, companyToReturn);
         }
