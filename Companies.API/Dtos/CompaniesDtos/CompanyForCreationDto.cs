@@ -12,6 +12,7 @@ namespace Companies.API.Dtos.CompaniesDtos
         [MaxLength(60, ErrorMessage = "Maximum length for the {0} is {1} characters.")]
         public string Address { get; set; } = string.Empty;
 
+        [MaxLength(30, ErrorMessage = "Maximum length for the {0} is {1} characters.")]
         public string Country { get; set; } = string.Empty;
     }
 }
