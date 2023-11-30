@@ -13,8 +13,8 @@ namespace Companies.API.Extensions
                 var serviceProvider = scope.ServiceProvider;
                 var db = serviceProvider.GetRequiredService<APIContext>();
 
-                //db.Database.EnsureDeleted();
-                //db.Database.Migrate();
+                db.Database.EnsureDeleted();
+                db.Database.Migrate();
 
                 try
                 {
