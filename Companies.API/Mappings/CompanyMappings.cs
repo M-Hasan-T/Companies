@@ -16,7 +16,9 @@ namespace Companies.API.Mappings
                     string.Empty :
                     $", {c.Country}")}"));
 
-            CreateMap<CompanyForCreationDto, CompanyDto>();
+            CreateMap<CompanyForCreationDto, Company>();
+            CreateMap<CompanyForUpdateDto, Company>();
+
         }
     }
 }
