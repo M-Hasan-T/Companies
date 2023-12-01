@@ -17,7 +17,7 @@ namespace Companies.API
             builder.Services.AddControllers(options =>
             {
                 options.ReturnHttpNotAcceptable = true;
-            });
+            }).AddNewtonsoftJson();
             //.AddXmlDataContractSerializerFormatters();
 
             builder.Services.AddDbContext<APIContext>(options =>
