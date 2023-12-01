@@ -18,9 +18,9 @@ namespace Companies.API.Entities
         //public string Position { get; set; } = string.Empty;
 
         public Guid DepartmentId { get; set; }
-        public Department Department { get; set; }
+        public Department Department { get; set; } = default!;
 
         public Guid CompanyId { get; set; }
-        public Company Company { get; set; } = new Company();
+        public Company Company { get; set; } = default!; //= new Company();
     }
 }

@@ -9,6 +9,7 @@ using Companies.API.Data;
 using Companies.API.Entities;
 using Companies.API.Dtos.EmployeesDtos;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Companies.API.Controllers
 {
@@ -47,13 +48,40 @@ namespace Companies.API.Controllers
 
             if (company is null) return NotFound("Company not found");
 
-            var employee = await db.Employees.Include(e => e.Department).FirstOrDefaultAsync(e => e.CompanyId.Equals(companyId));
+            var employee = await db.Employees.Include(e => e.Department)
+                .FirstOrDefaultAsync(e => e.Id == employeeId);
 
             if (employee is null) return NotFound("Employee not found");
 
             var employeeDto = mapper.Map<EmployeeDto>(employee);
             return Ok(employeeDto);
         }
+
+        [HttpPatch("{employeeId}")]
+        public async Task<ActionResult> PatchEmployee(
+            Guid companyId,
+            Guid employeeId,
+            JsonPatchDocument<EmployeesForUpdateDto> patchDoc)
+        {
+            var company = await db.Companies.FirstOrDefaultAsync(c => c.Id == companyId);
+
+            if (company is null) return NotFound("No company found");
+
+            var empToPatch = await db.Employees.Include(e => e.Department).FirstOrDefaultAsync(e => e.Id == employeeId);
+
+            if (empToPatch is null) return NotFound();
+
+            var dto = mapper.Map<EmployeesForUpdateDto>(empToPatch);
+
+            patchDoc.ApplyTo(dto);
+
+            mapper.Map(dto, empToPatch);
+            db.Update(empToPatch);
+            await db.SaveChangesAsync();
+
+            return NoContent();
+        }
+
 
         // GET: api/Employees/5
         //[HttpGet("{id}")]
