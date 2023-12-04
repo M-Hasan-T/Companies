@@ -21,5 +21,12 @@ namespace Companies.API.Services
             var dtos = mapper.Map<IEnumerable<CompanyDto>>(companies);
             return dtos;
         }
+
+        public async Task<CompanyDto> GetAsync(Guid id)
+        {
+            var company = await unitOfWork.CompanyRepository.GetAsync(id);
+            var companyDto = mapper.Map<CompanyDto>(company);
+            return companyDto;
+        }
     }
 }

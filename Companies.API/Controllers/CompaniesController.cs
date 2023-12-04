@@ -25,33 +25,22 @@ namespace Companies.API.Controllers
             this.serviceManager = serviceManager;
         }
 
+
         [HttpGet(Name = "RouteName")]
-        public async Task<ActionResult<IEnumerable<CompanyDto>>> GetCompany(bool includeEmployees = false)
-        {
-            // Don't work!!
-            //var dtos = includeEmployees ? mapper.ProjectTo<CompanyDto>(_context.Companies.Include(c => c.Employees)) :
-            //                              mapper.ProjectTo<CompanyDto>(_context.Companies);
-
-            var dtos = includeEmployees ? mapper.Map<IEnumerable<CompanyDto>>(await unitOfWork.CompanyRepository.GetAsync(includeEmployees: true))
-                                        : mapper.Map<IEnumerable<CompanyDto>>(await unitOfWork.CompanyRepository.GetAsync());
-
-            return Ok(dtos);
-        }
+        public async Task<ActionResult<IEnumerable<CompanyDto>>> GetCompany(bool includeEmployees = false) =>
+            Ok(await serviceManager.CompanyService.GetAsync(includeEmployees));
 
 
-
-        // GET: api/Companies/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Company>> GetCompany(Guid id)
         {
-            Company? company = await unitOfWork.CompanyRepository.GetAsync(id);
 
-            if (company == null)
+            var companyDto = await serviceManager.CompanyService.GetAsync(id);
+
+            if (companyDto == null)
             {
                 return NotFound();
             }
-
-            var companyDto = mapper.Map<CompanyDto>(company);
 
             return Ok(companyDto);
         }
