@@ -31,6 +31,8 @@ namespace Companies.API
             builder.Services.AddSwaggerGen();
             builder.Services.AddAutoMapper(typeof(CompanyMappings));
             builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
             var app = builder.Build();
 

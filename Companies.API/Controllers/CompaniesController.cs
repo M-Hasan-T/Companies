@@ -17,15 +17,13 @@ namespace Companies.API.Controllers
     [ApiController]
     public class CompaniesController : ControllerBase
     {
-        // private readonly APIContext _context;
         private readonly IMapper mapper;
-        private readonly ICompanyRepository companyRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public CompaniesController(APIContext context, IMapper mapper, ICompanyRepository companyRepository)
+        public CompaniesController(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            // _context = context;
             this.mapper = mapper;
-            this.companyRepository = companyRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         // GET: api/Companies
@@ -36,8 +34,8 @@ namespace Companies.API.Controllers
             //var dtos = includeEmployees ? mapper.ProjectTo<CompanyDto>(_context.Companies.Include(c => c.Employees)) :
             //                              mapper.ProjectTo<CompanyDto>(_context.Companies);
 
-            var dtos = includeEmployees ? mapper.Map<IEnumerable<CompanyDto>>(await companyRepository.GetAsync(includeEmployees: true))
-                                        : mapper.Map<IEnumerable<CompanyDto>>(await companyRepository.GetAsync());
+            var dtos = includeEmployees ? mapper.Map<IEnumerable<CompanyDto>>(await unitOfWork.CompanyRepository.GetAsync(includeEmployees: true))
+                                        : mapper.Map<IEnumerable<CompanyDto>>(await unitOfWork.CompanyRepository.GetAsync());
 
             return Ok(dtos);
         }
@@ -48,7 +46,7 @@ namespace Companies.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Company>> GetCompany(Guid id)
         {
-            Company? company = await companyRepository.GetAsync(id);
+            Company? company = await unitOfWork.CompanyRepository.GetAsync(id);
 
             if (company == null)
             {
@@ -79,12 +77,12 @@ namespace Companies.API.Controllers
                 return BadRequest();
             }
 
-            var existingCompany = await companyRepository.GetAsync(id);
+            var existingCompany = await unitOfWork.CompanyRepository.GetAsync(id);
 
             if (existingCompany == null) return NotFound();
 
             mapper.Map(dto, existingCompany);
-            await _context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             return Ok(mapper.Map<CompanyDto>(existingCompany)); //Only for demo
             //return NoContent();
@@ -105,9 +103,9 @@ namespace Companies.API.Controllers
 
             var company = mapper.Map<Company>(dto);
 
-            await companyRepository.AddAsync(company);
+            await unitOfWork.CompanyRepository.AddAsync(company);
             // _context.Companies.Add(company);
-            await _context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             //var companyToReturn = new CompanyDto
             //{
@@ -126,15 +124,15 @@ namespace Companies.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompany(Guid id)
         {
-            var company = await companyRepository.GetAsync(id);
+            var company = await unitOfWork.CompanyRepository.GetAsync(id);
             if (company == null)
             {
                 return NotFound();
             }
 
-            companyRepository.Remove(company);
+            unitOfWork.CompanyRepository.Remove(company);
             // _context.Companies.Remove(company);
-            await _context.SaveChangesAsync();
+            await unitOfWork.CompleteAsync();
 
             return NoContent();
         }
