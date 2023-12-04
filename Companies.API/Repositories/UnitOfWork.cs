@@ -1,18 +1,19 @@
-﻿using Companies.API.Data;
+﻿
+using Companies.API.Data;
 
 namespace Companies.API.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly APIContext db;
-        private readonly Lazy<CompanyRepository> companyRepository;
+        private readonly Lazy<ICompanyRepository> companyRepository;
 
         public ICompanyRepository CompanyRepository => companyRepository.Value;
 
-        public UnitOfWork(APIContext db)
+        public UnitOfWork(APIContext db, Lazy<ICompanyRepository> companyrepo)
         {
             this.db = db;
-            companyRepository = new Lazy<CompanyRepository>(() => new CompanyRepository(db));
+            companyRepository = companyrepo;
         }
 
         public async Task CompleteAsync()
