@@ -103,9 +103,5 @@ namespace Companies.API.Controllers
         //    return NoContent();
         //}
 
-        //private bool CompanyExists(Guid id)
-        //{
-        //    return _context.Companies.Any(e => e.Id == id);
-        //}
     }
 }
