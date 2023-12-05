@@ -50,37 +50,14 @@ namespace Companies.API.Controllers
             return NoContent();
         }
 
-        ////// POST: api/Companies
-        ////// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Company>> PostCompany(CompanyForCreationDto dto)
-        //{
-
-        //    //var company = new Company
-        //    //{
-        //    //    Name = dto.Name,
-        //    //    Address = dto.Address!,
-        //    //    Country = dto.Country!,
-        //    //};
-
-        //    var company = mapper.Map<Company>(dto);
-
-        //    await unitOfWork.CompanyRepository.AddAsync(company);
-        //    // _context.Companies.Add(company);
-        //    await unitOfWork.CompleteAsync();
-
-        //    //var companyToReturn = new CompanyDto
-        //    //{
-        //    //    Id = company.Id,
-        //    //    Name = company.Name,
-        //    //    Address = company.Address,
-        //    //    //Country = company.Country,
-        //    //};
-
-        //    var companyToReturn = mapper.Map<CompanyDto>(company);
-
-        //    return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, companyToReturn);
-        //}
+        //// POST: api/Companies
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Company>> PostCompany(CompanyForCreationDto dto)
+        {
+            var companyToReturn = await serviceManager.CompanyService.PostAsync(dto);
+            return CreatedAtAction(nameof(GetCompany), new { id = companyToReturn.Id }, companyToReturn);
+        }
 
         ////// DELETE: api/Companies/5
         //[HttpDelete("{id}")]
