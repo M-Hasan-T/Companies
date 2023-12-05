@@ -46,24 +46,13 @@ namespace Companies.API.Controllers
 
         // PUT: api/Companies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutCompany(Guid id, CompanyForUpdateDto dto)
-        //{
-        //    if (id != dto.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    var existingCompany = await unitOfWork.CompanyRepository.GetAsync(id);
-
-        //    if (existingCompany == null) return NotFound();
-
-        //    mapper.Map(dto, existingCompany);
-        //    await unitOfWork.CompleteAsync();
-
-        //    return Ok(mapper.Map<CompanyDto>(existingCompany)); //Only for demo
-        //    //return NoContent();
-        //}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCompany(Guid id, CompanyForUpdateDto dto)
+        {
+            if (id != dto.Id) return BadRequest(); //ToDo create Filter
+            await serviceManager.CompanyService.UpdateAsync(id, dto);
+            return NoContent();
+        }
 
         ////// POST: api/Companies
         ////// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

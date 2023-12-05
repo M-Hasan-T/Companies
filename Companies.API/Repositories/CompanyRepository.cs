@@ -34,5 +34,10 @@ namespace Companies.API.Repositories
         {
             db.Companies.Remove(company);
         }
+
+        public void Update(Company company)
+        {
+            db.Companies.Update(company);
+        }
     }
 }

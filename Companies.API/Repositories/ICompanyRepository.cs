@@ -8,5 +8,6 @@ namespace Companies.API.Repositories
         Task<List<Company>> GetAsync(bool includeEmployees = false);
         Task<Company?> GetAsync(Guid id);
         void Remove(Company company);
+        void Update(Company company);
     }
 }
