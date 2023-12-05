@@ -71,7 +71,7 @@ namespace Companies.API.Controllers
 
             if (empToPatch is null) return NotFound();
 
-            if (company.Id == empToPatch.CompanyId) return BadRequest();
+            if (company.Id != empToPatch.CompanyId) return BadRequest();
 
             var dto = mapper.Map<EmployeesForUpdateDto>(empToPatch);
 
