@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Companies.API.Data;
 using Companies.API.Entities;
-using Companies.API.Dtos.CompaniesDtos;
 using AutoMapper;
 using Companies.API.Repositories;
 using Companies.API.Services;
 using Companies.API.Exceptions;
+using Companies.Shared.Dtos.CompaniesDtos;
 
 namespace Companies.API.Controllers
 {

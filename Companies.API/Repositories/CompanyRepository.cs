@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Companies.API.Data;
-using Companies.API.Dtos.CompaniesDtos;
+﻿using Companies.API.Data;
 using Companies.API.Entities;
 using Microsoft.EntityFrameworkCore;
 

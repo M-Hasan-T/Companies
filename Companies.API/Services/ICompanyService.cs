@@ -1,4 +1,4 @@
-﻿using Companies.API.Dtos.CompaniesDtos;
+﻿using Companies.Shared.Dtos.CompaniesDtos;
 
 namespace Companies.API.Services
 {

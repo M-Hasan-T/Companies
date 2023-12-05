@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Companies.API.Dtos.EmployeesDtos;
 using Companies.API.Entities;
+using Companies.Shared.Dtos.EmployeesDtos;
 
 namespace Companies.API.Mappings
 {

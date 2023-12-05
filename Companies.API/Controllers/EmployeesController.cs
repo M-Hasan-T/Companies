@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Companies.API.Data;
 using Companies.API.Entities;
-using Companies.API.Dtos.EmployeesDtos;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using Companies.Shared.Dtos.EmployeesDtos;
 
 namespace Companies.API.Controllers
 {

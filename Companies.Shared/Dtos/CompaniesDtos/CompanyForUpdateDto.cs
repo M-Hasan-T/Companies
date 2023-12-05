@@ -1,4 +1,4 @@
-﻿namespace Companies.API.Dtos.CompaniesDtos
+﻿namespace Companies.Shared.Dtos.CompaniesDtos
 {
     public class CompanyForUpdateDto : CompanyForManipulationDto
     {

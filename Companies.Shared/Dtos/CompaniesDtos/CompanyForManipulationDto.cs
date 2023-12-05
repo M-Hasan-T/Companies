@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Companies.API.Dtos.CompaniesDtos
+namespace Companies.Shared.Dtos.CompaniesDtos
 {
     public abstract class CompanyForManipulationDto
     {
