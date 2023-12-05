@@ -11,6 +11,7 @@ using Companies.API.Dtos.CompaniesDtos;
 using AutoMapper;
 using Companies.API.Repositories;
 using Companies.API.Services;
+using Companies.API.Exceptions;
 
 namespace Companies.API.Controllers
 {
@@ -30,7 +31,8 @@ namespace Companies.API.Controllers
         public async Task<ActionResult<IEnumerable<CompanyDto>>> GetCompany(bool includeEmployees = false)
 
         {
-            throw new Exception("From controller");
+            //throw new Exception("From controller");
+            throw new CompanyNotFoundException(Guid.NewGuid());
 
             return Ok(await serviceManager.CompanyService.GetAsync(includeEmployees));
         }

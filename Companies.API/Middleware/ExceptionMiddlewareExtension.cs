@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using Companies.API.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Companies.API.Middleware
 {
@@ -8,21 +9,38 @@ namespace Companies.API.Middleware
     {
         public static void UseConfigureExceptionHandler(this IApplicationBuilder app)
         {
+
             app.UseExceptionHandler(appError =>
             {
                 appError.Run(async context =>
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    context.Response.ContentType = "application/json";
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
 
                     if (contextFeature != null)
                     {
-                        var problemDetails = new ProblemDetails
+                        var problemDetailsFactory = app.ApplicationServices.GetRequiredService<ProblemDetailsFactory>();
+                        ProblemDetails problemDetails = default!;
+
+                        switch (contextFeature.Error)
                         {
-                            Status = context.Response.StatusCode,
-                            Title = contextFeature.Error.Message,
-                        };
+                            case CompanyNotFoundException companyNotFoundException:
+                                problemDetails = problemDetailsFactory.CreateProblemDetails(
+                                    context,
+                                    StatusCodes.Status404NotFound,
+                                    companyNotFoundException.Title,
+                                    detail: companyNotFoundException.Message);
+                                break;
+                            default:
+                                problemDetails = problemDetailsFactory.CreateProblemDetails(
+                                    context,
+                                    StatusCodes.Status500InternalServerError,
+                                    "Internal Server Error"
+                                    );
+                                break;
+                        }
+
+                        context.Response.StatusCode = (int)problemDetails.Status!;
+                        context.Response.ContentType = "application/json";
                         await context.Response.WriteAsJsonAsync(problemDetails);
                     }
                 });
