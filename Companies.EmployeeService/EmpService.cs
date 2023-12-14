@@ -20,8 +20,16 @@
 
         public bool HandleMessage(string text)
         {
-            if (validator.Handler.CheckMessage.Message != text) return false;
-            return true;
+            bool res;
+            if (validator.Handler.CheckMessage.Message != text) res = false;
+            else
+            {
+                validator.MustBeInvoked();
+                //validator.MustBeInvoked();
+
+                res = true;
+            }
+            return res;
         }
     }
 
@@ -46,8 +54,8 @@
         IHandler Handler { get; }
         SalaryLevel ValidateSalaryLevel(Employee employee);
         bool ValidateName(Employee employee);
-
         void ValidateName2(string name);
+        void MustBeInvoked();
     }
 
     public interface IHandler
