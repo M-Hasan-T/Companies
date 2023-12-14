@@ -32,6 +32,15 @@ namespace Companies.API
             builder.Services.AddSwaggerGen();
             builder.Services.AddAutoMapper(typeof(CompanyMappings));
             builder.Services.AddRepositories();
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy("CompaniesCorsPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
 
             var app = builder.Build();
 
@@ -46,6 +55,8 @@ namespace Companies.API
                 app.UseSwaggerUI();
                 await app.SeedDataAsync();
             }
+
+            app.UseCors("CompaniesCorsPolicy");
 
             app.UseHttpsRedirection();
 
