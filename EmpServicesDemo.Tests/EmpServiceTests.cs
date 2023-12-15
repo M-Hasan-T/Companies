@@ -107,12 +107,12 @@ namespace EmpServicesDemo.Tests
             mockValidator.VerifyNoOtherCalls();
         }
 
-        //[Fact]
-        //public void RegisterUser_WhenSalaryLevelIsDefault_ShouldThrowArgumentException()
-        //{
-        //    var sut = new EmpService(Mock.Of<IValidator>());
-        //    Assert.Throws<ArgumentException>(() => sut.RegisterUser(new Employee()));
+        [Fact]
+        public void RegisterUser_WhenSalaryLevelIsDefault_ShouldThrowArgumentException()
+        {
+            var sut = new EmpService(Mock.Of<IValidator>());
+            Assert.Throws<ArgumentException>(() => sut.RegisterUser(new Employee()));
 
-        //}
+        }
     }
 }
