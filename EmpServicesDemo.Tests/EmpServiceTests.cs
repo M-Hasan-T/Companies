@@ -17,9 +17,11 @@ namespace EmpServicesDemo.Tests
             var employee = new Employee
             {
                 Name = incorrectEmployeeName,
+                SalaryLevel = SalaryLevel.NotSet,
             };
 
             mockValidator.Setup(x => x.ValidateName(employee)).Returns(false);
+            mockValidator.Setup(x => x.ValidateName(It.IsAny<string>())).Returns(false);
             mockValidator.Setup(x => x.ValidateSalaryLevel(employee)).Returns(SalaryLevel.Default);
             mockValidator.Setup(x => x.ValidateName2(It.Is<string>(x => x.StartsWith('K'))));
 
@@ -28,6 +30,27 @@ namespace EmpServicesDemo.Tests
 
             Assert.False(actual);
         }
+
+        [Fact]
+        public void RegisterUser2()
+        {
+
+            var mockValidator = new Mock<IValidator>();
+
+            var employee = new Employee
+            {
+                Name = "Pelle",
+                SalaryLevel = SalaryLevel.NotSet
+            };
+
+            mockValidator.SetupSequence(x => x.ValidateName(It.IsAny<string>())).Returns(true).Returns(false);
+
+            var sut = new EmpService(mockValidator.Object);
+            var actual = sut.RegisterUser(employee);
+
+            Assert.True(actual);
+        }
+
         [Fact]
         public void HandleMessage_ShouldReturnTrueIfMatch()
         {
@@ -83,5 +106,13 @@ namespace EmpServicesDemo.Tests
             mockValidator.Verify(x => x.MustBeInvoked(), Times.Exactly(2));
             mockValidator.VerifyNoOtherCalls();
         }
+
+        //[Fact]
+        //public void RegisterUser_WhenSalaryLevelIsDefault_ShouldThrowArgumentException()
+        //{
+        //    var sut = new EmpService(Mock.Of<IValidator>());
+        //    Assert.Throws<ArgumentException>(() => sut.RegisterUser(new Employee()));
+
+        //}
     }
 }

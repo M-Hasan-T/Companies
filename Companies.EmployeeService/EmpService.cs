@@ -11,11 +11,17 @@
 
         public bool RegisterUser(Employee employee)
         {
+            if (employee.SalaryLevel == SalaryLevel.Default) throw new ArgumentException();
+
             var salaryLevel = validator.ValidateSalaryLevel(employee);
             //Do a lot of stuff..
             validator.ValidateName2(employee.Name);
 
-            return validator.ValidateName(employee);
+            var res1 = validator.ValidateName(employee.Name);
+            var res2 = validator.ValidateName(employee.Name);
+
+            if (res1 && !res2) return true;
+            else return false;
         }
 
         public bool HandleMessage(string text)
@@ -45,7 +51,7 @@
         public string Name { get; set; } = string.Empty;
         public int Salary { get; set; }
 
-        public SalaryLevel salaryLevel { get; set; }
+        public SalaryLevel SalaryLevel { get; set; }
     }
 
     public enum SalaryLevel
@@ -61,6 +67,7 @@
         IHandler Handler { get; }
         SalaryLevel ValidateSalaryLevel(Employee employee);
         bool ValidateName(Employee employee);
+        bool ValidateName(string name);
         void ValidateName2(string name);
         void MustBeInvoked();
         string TestProp { get; set; }
