@@ -29,6 +29,14 @@ namespace EmpServicesDemo.Tests
             Assert.Equal(val1 + val2, res);
         }
 
+        [Theory]
+        [MemberData(nameof(GetNumbers2), 2)]
+        public void Add3(int val1, int val2)
+        {
+            var res = sut.Add(val1, val2);
+            Assert.Equal(val1 + val2, res);
+        }
+
         public static IEnumerable<object[]> GetNumbers(int nrOfDataSets)
         {
             var dataSets = new List<object[]>
@@ -40,6 +48,19 @@ namespace EmpServicesDemo.Tests
             };
 
             return dataSets.Count <= nrOfDataSets ? dataSets : dataSets.Take(nrOfDataSets);
+        }
+
+        public static IEnumerable<object[]> GetNumbers2(int nrOfDataSets)
+        {
+            var dataSets = new TheoryData<int, int>
+            {
+                { 1, 2},
+                { 1, 2},
+                { 1, 2},
+                { 1, 2},
+            };
+
+            return dataSets.Count() <= nrOfDataSets ? dataSets : dataSets.Take(nrOfDataSets);
         }
     }
 
