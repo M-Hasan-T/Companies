@@ -76,4 +76,28 @@ namespace EmpServicesDemo.Tests
 
         }
     }
+
+    public class UseMemberDataFromAnotherClass2
+    {
+        [Theory]
+        [ClassData(typeof(ClassDataExample))]
+        public void Demo(int val1, int val2)
+        {
+            var sut = new Calculator();
+            var res = sut.Add(val1, val2);
+            Assert.Equal(val1 + val2, res);
+
+        }
+    }
+
+    public class ClassDataExample : TheoryData<int, int>
+    {
+        public ClassDataExample()
+        {
+            Add(1, 45);
+            Add(1, 45);
+            Add(1, 45);
+            Add(1, 45);
+        }
+    }
 }
