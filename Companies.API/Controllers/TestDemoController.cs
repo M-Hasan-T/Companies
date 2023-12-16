@@ -37,7 +37,9 @@ namespace Companies.API.Controllers
             //}
             //var employeeDtos = mapper.Map<IEnumerable<EmployeeDto>>(company.Employees);
 
-            return Ok();
+            if (User.Identity.IsAuthenticated) return Ok("User is Auth");
+            else return BadRequest("Not Allowed");
+
         }
 
         //[HttpGet("{employeeId:guid}")]
