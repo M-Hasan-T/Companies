@@ -7,6 +7,7 @@ using Companies.Shared.Dtos.EmployeesDtos;
 using Companies.API.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Companies.Shared.Dtos.CompaniesDtos;
+using Companies.API.Entities;
 
 namespace Companies.API.Controllers
 {
@@ -57,6 +58,17 @@ namespace Companies.API.Controllers
             var dtos = mapper.Map<IEnumerable<CompanyDto>>(companies);
 
             return Ok(dtos);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Company>> GetCompany(Guid id)
+        {
+            var company = await unitOfWork.CompanyRepository.GetAsync(id);
+
+            if (company == null) return NotFound();
+
+            var companyDto = mapper.Map<CompanyDto>(company);
+            return Ok(companyDto);
         }
 
         //[HttpGet("{employeeId:guid}")]
