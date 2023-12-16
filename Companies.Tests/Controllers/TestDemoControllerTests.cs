@@ -3,16 +3,36 @@ using Companies.API.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Companies.API.Repositories;
+using AutoMapper;
+using Companies.API.Mappings;
+using Microsoft.AspNetCore.Identity;
+using Companies.API.Entities;
+using Companies.Shared.Dtos.CompaniesDtos;
 
 namespace Companies.Tests.Controllers
 {
-    public class TestDemoControllerTests
+    public class TestDemoControllerTests : IDisposable
     {
         private TestDemoController sut;
+        private Mock<ICompanyRepository> mockRepo;
 
         public TestDemoControllerTests()
         {
-            sut = new TestDemoController();
+            mockRepo = new Mock<ICompanyRepository>();
+            var mockUow = new Mock<IUnitOfWork>();
+
+            mockUow.Setup(x => x.CompanyRepository).Returns(mockRepo.Object);
+
+            var mapper = new Mapper(new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<CompanyMappings>();
+            }));
+
+            var mockUserStore = new Mock<IUserStore<IdentityUser>>();
+            var userManager = new UserManager<IdentityUser>(mockUserStore.Object, null, null, null, null, null, null, null, null);
+
+            sut = new TestDemoController(mockUow.Object, mapper, userManager);
         }
 
         [Fact]
@@ -53,6 +73,53 @@ namespace Companies.Tests.Controllers
             var resType = output.Result as OkObjectResult;
 
             Assert.IsType<OkObjectResult>(resType);
+        }
+
+        [Fact]
+        public async Task GetCompany_ShouldReturn200Ok()
+        {
+            var companies = GetCompanies();
+            mockRepo.Setup(x => x.GetAsync(false)).ReturnsAsync(companies);
+
+            var output = await sut.GetCompany();
+
+            var resultType = output.Result as OkObjectResult;
+
+            Assert.IsType<OkObjectResult>(resultType);
+            Assert.Equal(StatusCodes.Status200OK, resultType.StatusCode);
+
+            var items = resultType.Value as List<CompanyDto>;
+            Assert.IsType<List<CompanyDto>>(items);
+
+            Assert.Equal(items.Count, companies.Count);
+        }
+
+
+        private List<Company> GetCompanies()
+        {
+            return new List<Company>
+            {
+                new Company
+                {
+                     Id = Guid.NewGuid(),
+                     Name = "Test",
+                     Address = "Ankeborg, Sweden",
+                     Employees = new List<Employee>()
+                },
+                 new Company
+                {
+                     Id = Guid.NewGuid(),
+                     Name = "Test",
+                     Address = "Ankeborg, Sweden",
+                     Employees = new List<Employee>()
+                }
+            };
+
+        }
+
+        public void Dispose()
+        {
+            //Not used here
         }
     }
 }
