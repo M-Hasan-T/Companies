@@ -53,21 +53,21 @@ namespace Companies.Integration.Tests
             Assert.Equal("application/json", response.Content.Headers.ContentType.MediaType);
         }
 
-        //[Fact]
-        //public async Task Index3_ShouldReturnExpectedMessage_WithStream()
-        //{
-        //    var response = await httpClient.GetStreamAsync("dto");
+        [Fact]
+        public async Task Index3_ShouldReturnExpectedMessage_WithStream()
+        {
+            var response = await httpClient.GetStreamAsync("dto");
 
-        //    var dto = await JsonSerializer.DeserializeAsync<CompanyDto>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var dto = await JsonSerializer.DeserializeAsync<CompanyDto>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-        //    Assert.Equal("Working", dto.Name);
-        //}
+            Assert.Equal("Working", dto.Name);
+        }
 
-        //[Fact]
-        //public async Task Index4_ShouldReturnExpectedMessageSimplifyed()
-        //{
-        //    var dto = await httpClient.GetFromJsonAsync<CompanyDto>("dto");
-        //    Assert.Equal("Working", dto.Name);
-        //}
+        [Fact]
+        public async Task Index4_ShouldReturnExpectedMessageSimplifyed()
+        {
+            var dto = await httpClient.GetFromJsonAsync<CompanyDto>("dto");
+            Assert.Equal("Working", dto.Name);
+        }
     }
 }
