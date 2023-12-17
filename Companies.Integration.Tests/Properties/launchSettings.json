@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Companies.Integration.Tests": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:39499;http://localhost:39500"
+    }
+  }
+}
